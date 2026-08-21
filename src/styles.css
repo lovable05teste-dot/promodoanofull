@@ -146,3 +146,10 @@
 #lovable-badge {
   display: none !important;
 }
+
+
+@keyframes product-navigation-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
