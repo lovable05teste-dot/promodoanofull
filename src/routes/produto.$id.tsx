@@ -107,12 +107,18 @@ function ProductView({ p }: { p: Product }) {
         image: overrides[name] ?? v?.image ?? v?.swatch ?? p.carousel[0],
         oldPrice: v?.oldPrice ?? p.oldPrice,
         newPrice: v?.newPrice ?? p.newPrice,
+        carousel: v?.carousel,
       };
     });
   }, [p, overrides]);
   const oldPrice = variant?.oldPrice ?? p.oldPrice;
   const newPrice = variant?.newPrice ?? p.newPrice;
-  const carousel = variant?.image ? [variant.image, ...p.carousel] : p.carousel;
+  const carousel =
+    variant?.carousel && variant.carousel.length > 0
+      ? variant.carousel
+      : variant?.image
+        ? [variant.image, ...p.carousel.filter((src) => src !== variant.image)]
+        : p.carousel;
   const total = carousel.length;
   useEffect(() => {
     setIdx(0);
@@ -181,6 +187,7 @@ function ProductView({ p }: { p: Product }) {
           image: carousel[0],
           color,
           voltage: volt,
+          extra,
         })
       );
     } catch {}
@@ -320,7 +327,11 @@ function ProductView({ p }: { p: Product }) {
                     <button
                       key={v.name}
                       onClick={() => setColor(v.name)}
-                      className={`w-[150px] p-2 flex flex-col text-left rounded-lg border bg-white overflow-hidden ${
+                      className={`${
+                        p.compactColorSelector
+                          ? "w-[138px] px-2 pt-2 pb-4 items-center text-center"
+                          : "w-[150px] p-2 text-left"
+                      } flex flex-col rounded-lg border bg-white overflow-hidden ${
                         v.name === color ? "border-[#3483fa] border-2" : "border-gray-200"
                       }`}
                     >
@@ -331,14 +342,18 @@ function ProductView({ p }: { p: Product }) {
                         height={110}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-[110px] object-contain bg-white"
+                        className={`w-full object-contain bg-white ${p.compactColorSelector ? "h-[96px]" : "h-[110px]"}`}
                       />
-                      <div className="min-w-0 mt-2">
+                      <div className={`min-w-0 mt-2 ${p.compactColorSelector ? "w-full text-center" : ""}`}>
                         <p className="text-[15px] leading-tight text-[#333] truncate">{v.name}</p>
-                        <p className="mt-1 text-[17px] leading-tight font-semibold text-black/90 whitespace-nowrap">
-                          R$ {v.newPrice}
-                        </p>
-                        <p className="mt-1 text-[13px] leading-tight text-gray-500 truncate">Disponível</p>
+                        {!p.compactColorSelector && (
+                          <>
+                            <p className="mt-1 text-[17px] leading-tight font-semibold text-black/90 whitespace-nowrap">
+                              R$ {v.newPrice}
+                            </p>
+                            <p className="mt-1 text-[13px] leading-tight text-gray-500 truncate">Disponível</p>
+                          </>
+                        )}
                       </div>
                     </button>
                 ))}
