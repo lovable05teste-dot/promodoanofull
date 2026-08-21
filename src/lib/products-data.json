@@ -2530,5 +2530,280 @@
         ]
       }
     ]
+  },
+  {
+    "id": "8501150023",
+    "title": "Esmerilhadeira Angular Bosch GWS 850 850W Disco 115mm",
+    "oldPrice": "474,39",
+    "newPrice": "103,93",
+    "colors": null,
+    "voltage": {
+      "options": [
+        "127V",
+        "220V"
+      ],
+      "active": "127V"
+    },
+    "carousel": [
+      "https://i.imgur.com/BW5EgtB.jpg",
+      "https://i.imgur.com/hnxahxV.jpg",
+      "https://i.imgur.com/QZLiUuS.jpg",
+      "https://i.imgur.com/FQALlj5.jpg"
+    ],
+    "photos": [
+      "https://i.imgur.com/BW5EgtB.jpg",
+      "https://i.imgur.com/QZLiUuS.jpg",
+      "https://i.imgur.com/FQALlj5.jpg"
+    ],
+    "reviews": [
+      [
+        "https://i.imgur.com/ZfzM976.jpg",
+        "https://i.imgur.com/VmOjX9V.jpg",
+        "https://i.imgur.com/b5xYYHH.jpg"
+      ],
+      [
+        "https://i.imgur.com/1ZtbUAA.jpg",
+        "https://i.imgur.com/bxzQ2n3.jpg",
+        "https://i.imgur.com/KbNIDfM.jpg"
+      ],
+      [
+        "https://i.imgur.com/FVlPBGu.jpg",
+        "https://i.imgur.com/fdxWlAr.jpg",
+        "https://i.imgur.com/Qp0cWVm.jpg"
+      ]
+    ],
+    "hideReviews": false,
+    "category": "Ferramentas",
+    "features": [
+      "Potência de 850 W.",
+      "Compatível com discos de 115 mm.",
+      "Disponível em 127 V e 220 V.",
+      "Empunhadura auxiliar para melhor controle.",
+      "Indicada para cortes, desbastes e acabamentos com o acessório adequado."
+    ],
+    "specGroups": [
+      {
+        "title": "Características gerais",
+        "rows": [
+          [
+            "Marca",
+            "Bosch"
+          ],
+          [
+            "Linha",
+            "GWS"
+          ],
+          [
+            "Modelo",
+            "GWS 850"
+          ],
+          [
+            "Tipo",
+            "Esmerilhadeira angular"
+          ]
+        ]
+      },
+      {
+        "title": "Desempenho",
+        "rows": [
+          [
+            "Potência",
+            "850 W"
+          ],
+          [
+            "Diâmetro do disco",
+            "115 mm"
+          ],
+          [
+            "Voltagem",
+            "127 V ou 220 V"
+          ]
+        ]
+      },
+      {
+        "title": "Conteúdo",
+        "rows": [
+          [
+            "Produto principal",
+            "Esmerilhadeira angular"
+          ],
+          [
+            "Empunhadura auxiliar",
+            "Sim"
+          ],
+          [
+            "Disco compatível",
+            "115 mm"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "4569300024",
+    "title": "Cômoda 8 Gavetas 2 Portas Albatroz Verona Com Cabideiro",
+    "oldPrice": "456,93",
+    "newPrice": "89,90",
+    "colors": [
+      "Nature/Titanium",
+      "Cinamomo/Off white",
+      "Branco",
+      "Cinamomo"
+    ],
+    "activeColor": "Nature/Titanium",
+    "compactColorSelector": true,
+    "colorVariants": [
+      {
+        "name": "Nature/Titanium",
+        "image": "https://i.imgur.com/elTRk5Q.jpg",
+        "carousel": [
+          "https://i.imgur.com/elTRk5Q.jpg",
+          "https://i.imgur.com/uz14ueQ.jpg",
+          "https://i.imgur.com/pSrhUtU.jpg",
+          "https://i.imgur.com/ljQeO4e.jpg",
+          "https://i.imgur.com/iHUarsq.jpg",
+          "https://i.imgur.com/cN2W19T.jpg",
+          "https://i.imgur.com/00ktMbX.jpg"
+        ]
+      },
+      {
+        "name": "Cinamomo/Off white",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_955905-MLA105360064179_012026-O.webp",
+        "carousel": [
+          "https://i.imgur.com/nRueySv.jpg",
+          "https://i.imgur.com/yJwkIxw.jpg",
+          "https://i.imgur.com/cqMcbw8.jpg",
+          "https://i.imgur.com/vTofK1f.jpg",
+          "https://i.imgur.com/dYVlCnZ.jpg",
+          "https://i.imgur.com/xmBETfK.jpg",
+          "https://i.imgur.com/GQ7t8t1.jpg",
+          "https://i.imgur.com/LMisiP8.jpg",
+          "https://i.imgur.com/mLHT0n7.jpg"
+        ]
+      },
+      {
+        "name": "Branco",
+        "image": "https://i.imgur.com/UQYpXvx.jpg",
+        "carousel": [
+          "https://i.imgur.com/UQYpXvx.jpg",
+          "https://i.imgur.com/XjyNLjK.jpg",
+          "https://i.imgur.com/tM8JDC7.jpg",
+          "https://i.imgur.com/tfUq6D4.jpg",
+          "https://i.imgur.com/0gYECzp.jpg",
+          "https://i.imgur.com/RP2dHPu.jpg",
+          "https://i.imgur.com/FTH8y4Z.jpg",
+          "https://i.imgur.com/xmBETfK.jpg",
+          "https://i.imgur.com/mLHT0n7.jpg"
+        ]
+      },
+      {
+        "name": "Cinamomo",
+        "image": "https://i.imgur.com/TLahY8y.jpg",
+        "carousel": [
+          "https://i.imgur.com/TLahY8y.jpg",
+          "https://i.imgur.com/420pvJo.jpg",
+          "https://i.imgur.com/nMIwBvA.jpg",
+          "https://i.imgur.com/ELltkWN.jpg",
+          "https://i.imgur.com/0gYECzp.jpg",
+          "https://i.imgur.com/xmBETfK.jpg",
+          "https://i.imgur.com/ZON5ugI.jpg",
+          "https://i.imgur.com/tY5D3ny.jpg",
+          "https://i.imgur.com/mLHT0n7.jpg"
+        ]
+      }
+    ],
+    "voltage": null,
+    "carousel": [
+      "https://i.imgur.com/elTRk5Q.jpg",
+      "https://i.imgur.com/uz14ueQ.jpg",
+      "https://i.imgur.com/pSrhUtU.jpg",
+      "https://i.imgur.com/ljQeO4e.jpg",
+      "https://i.imgur.com/iHUarsq.jpg",
+      "https://i.imgur.com/cN2W19T.jpg",
+      "https://i.imgur.com/00ktMbX.jpg"
+    ],
+    "photos": [
+      "https://i.imgur.com/cFEWQcm.jpg",
+      "https://i.imgur.com/HIqlQMs.jpg",
+      "https://i.imgur.com/FKVI0CJ.jpg",
+      "https://i.imgur.com/iDPa6Yz.jpg",
+      "https://i.imgur.com/kazR6c1.jpg",
+      "https://i.imgur.com/eRxX1q6.jpg",
+      "https://i.imgur.com/j7R8mkt.jpg"
+    ],
+    "reviews": [
+      [
+        "https://i.imgur.com/LDtBUep.jpg",
+        "https://i.imgur.com/kExmmAj.jpg"
+      ],
+      [
+        "https://i.imgur.com/VGSlF6y.jpg",
+        "https://i.imgur.com/xDZRrRF.jpg",
+        "https://i.imgur.com/SUhaQDi.jpg",
+        "https://i.imgur.com/jwKVkuE.jpg"
+      ]
+    ],
+    "hideReviews": false,
+    "category": "Móveis",
+    "features": [
+      "Possui 8 gavetas.",
+      "Possui 2 portas.",
+      "Cabideiro interno.",
+      "Quatro opções de acabamento.",
+      "Espaço interno para organizar roupas e acessórios."
+    ],
+    "specGroups": [
+      {
+        "title": "Características gerais",
+        "rows": [
+          [
+            "Marca",
+            "Albatroz"
+          ],
+          [
+            "Modelo",
+            "Verona"
+          ],
+          [
+            "Tipo",
+            "Cômoda com cabideiro"
+          ],
+          [
+            "Quantidade de gavetas",
+            "8"
+          ]
+        ]
+      },
+      {
+        "title": "Armazenamento",
+        "rows": [
+          [
+            "Quantidade de portas",
+            "2"
+          ],
+          [
+            "Cabideiro",
+            "Sim"
+          ],
+          [
+            "Uso recomendado",
+            "Quarto e closet"
+          ]
+        ]
+      },
+      {
+        "title": "Acabamentos",
+        "rows": [
+          [
+            "Cores disponíveis",
+            "Nature/Titanium, Cinamomo/Off white, Branco e Cinamomo"
+          ],
+          [
+            "Montagem",
+            "Necessária"
+          ]
+        ]
+      }
+    ]
   }
 ]
