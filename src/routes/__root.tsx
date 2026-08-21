@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -120,6 +121,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+function ProductNavigationSpinner() {
+  const isPending = useRouterState({
+    select: (state) => state.status === "pending",
+  });
+
+  if (!isPending) return null;
+
+  return (
+    <div
+      aria-label="Carregando produto"
+      role="status"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 2147483647,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        pointerEvents: "none",
+        background: "transparent",
+      }}
+    >
+      <span
+        style={{
+          display: "block",
+          width: 58,
+          height: 58,
+          border: "6px solid transparent",
+          borderTopColor: "#3483fa",
+          borderRightColor: "#3483fa",
+          borderBottomColor: "#3483fa",
+          borderRadius: "50%",
+          background: "transparent",
+          animation: "spin 0.75s linear infinite",
+        }}
+      />
+    </div>
+  );
+}
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
@@ -128,6 +169,7 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <ProductNavigationSpinner />
         <Scripts />
       </body>
     </html>
