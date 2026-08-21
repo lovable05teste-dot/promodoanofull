@@ -2370,5 +2370,152 @@
         ]
       }
     ]
+  },
+  {
+    "id": "9218300153",
+    "title": "Bicicleta Alumínio Aro 29 Ksw 24v Freio Disco Xlt",
+    "oldPrice": "921,83",
+    "newPrice": "153,82",
+    "colors": [
+      "Preto/Verde",
+      "Preto/Laranja",
+      "Preto/Azul",
+      "Grafite",
+      "Branco",
+      "Azul"
+    ],
+    "activeColor": "Preto/Verde",
+    "compactColorSelector": true,
+    "colorVariants": [
+      {
+        "name": "Preto/Verde",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_915628-MLA99492707642_112025-F.webp",
+        "carousel": [
+          "https://i.imgur.com/4bfWnYn.jpg"
+        ]
+      },
+      {
+        "name": "Preto/Laranja",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_916621-MLA96696502949_102025-F.webp",
+        "carousel": [
+          "https://i.imgur.com/JiuDtde.jpg",
+          "https://i.imgur.com/RkEkuPs.jpg"
+        ]
+      },
+      {
+        "name": "Preto/Azul",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_701913-MLA107370027193_022026-O.webp",
+        "carousel": [
+          "https://i.imgur.com/PTssXku.jpg",
+          "https://i.imgur.com/xoSnGiu.jpg",
+          "https://i.imgur.com/dY8rSkJ.jpg"
+        ]
+      },
+      {
+        "name": "Grafite",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_659970-MLA95676804062_102025-F.webp",
+        "carousel": [
+          "https://i.imgur.com/D5Oo0o6.jpg",
+          "https://i.imgur.com/dgW68hQ.jpg"
+        ]
+      },
+      {
+        "name": "Branco",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_762110-MLA106704802644_022026-F.webp",
+        "carousel": [
+          "https://i.imgur.com/bfkR4ip.jpg",
+          "https://i.imgur.com/oIuigQv.jpg"
+        ]
+      },
+      {
+        "name": "Azul",
+        "image": "https://http2.mlstatic.com/D_NQ_NP_2X_922242-MLA99991721269_112025-F.webp",
+        "carousel": [
+          "https://i.imgur.com/XJ5qsK2.jpg",
+          "https://i.imgur.com/oIuigQv.jpg"
+        ]
+      }
+    ],
+    "voltage": null,
+    "extra": {
+      "label": "Tamanho do quadro",
+      "options": [
+        "15 \"",
+        "17 \"",
+        "19 \"",
+        "21 \""
+      ],
+      "active": "15 \""
+    },
+    "carousel": [
+      "https://i.imgur.com/4bfWnYn.jpg"
+    ],
+    "photos": [
+      "https://i.imgur.com/4bfWnYn.jpg"
+    ],
+    "reviews": [],
+    "hideReviews": true,
+    "category": "Ciclismo",
+    "features": [
+      "Quadro em alumínio.",
+      "Rodas aro 29.",
+      "Sistema de 24 velocidades.",
+      "Freios a disco.",
+      "Câmbio traseiro XLT.",
+      "Disponível em seis opções de cor e quatro tamanhos de quadro."
+    ],
+    "specGroups": [
+      {
+        "title": "Características gerais",
+        "rows": [
+          [
+            "Marca",
+            "KSW"
+          ],
+          [
+            "Modelo",
+            "Aro 29 XLT"
+          ],
+          [
+            "Material do quadro",
+            "Alumínio"
+          ],
+          [
+            "Quantidade de velocidades",
+            "24"
+          ]
+        ]
+      },
+      {
+        "title": "Freios e rodas",
+        "rows": [
+          [
+            "Aro",
+            "29"
+          ],
+          [
+            "Tipo de freio",
+            "Disco"
+          ],
+          [
+            "Uso recomendado",
+            "Urbano e lazer"
+          ]
+        ]
+      },
+      {
+        "title": "Opções",
+        "rows": [
+          [
+            "Cores",
+            "Preto/Verde, Preto/Laranja, Preto/Azul, Grafite, Branco e Azul"
+          ],
+          [
+            "Tamanhos do quadro",
+            "15, 17, 19 e 21 polegadas"
+          ]
+        ]
+      }
+    ]
   }
 ]
