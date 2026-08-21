@@ -118,7 +118,14 @@ const CASINHA: ReviewText[] = [
   { author: "Marcelo Torres", text: "Bem resistente, já são meses de uso e continua como nova. O teto removível facilita muito a limpeza. Comprei na promoção e valeu cada centavo.", likes: 158 },
 ];
 
+const BICICLETA: ReviewText[] = [
+  { author: "Ana Paula R.", text: "A bicicleta chegou bem embalada e a cor correspondeu às fotos do anúncio. Gostei muito do acabamento do quadro e da montagem.", likes: 214 },
+  { author: "Rodrigo Santos", text: "Produto recebido conforme o anúncio. O aro 29 ficou ótimo para o uso diário e as marchas funcionam bem.", likes: 183 },
+  { author: "Carla Mendes", text: "Gostei da bicicleta e das opções de cor e tamanho do quadro. Chegou protegida e sem avarias.", likes: 157 },
+];
+
 export const REVIEWS_BY_PRODUCT: Record<string, ReviewText[]> = {
+  "9218300153": BICICLETA,
   "6549324": PANELAS,
   "8198000010": CHURRASQUEIRA,
   "4986000011": CADEIRA,
