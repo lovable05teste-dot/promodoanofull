@@ -2805,5 +2805,144 @@
         ]
       }
     ]
+  },
+  {
+    "id": "3078200025",
+    "title": "Andador Infantil Bebê Antiqueda Torino Galzerano",
+    "oldPrice": "307,82",
+    "newPrice": "104,82",
+    "colors": [
+      "Marrom e Laranja",
+      "Rosa",
+      "Terracota"
+    ],
+    "activeColor": "Marrom e Laranja",
+    "compactColorSelector": true,
+    "colorVariants": [
+      {
+        "name": "Marrom e Laranja",
+        "image": "https://i.imgur.com/3LrwcBJ.jpg",
+        "carousel": [
+          "https://i.imgur.com/3LrwcBJ.jpg",
+          "https://i.imgur.com/s8StDGC.jpg",
+          "https://i.imgur.com/fxmUVjm.jpg",
+          "https://i.imgur.com/e6UQUDY.jpg",
+          "https://i.imgur.com/poCADAs.jpg",
+          "https://i.imgur.com/YsGZx4t.jpg",
+          "https://i.imgur.com/ytAkNHN.jpg",
+          "https://i.imgur.com/NbDt2qO.jpg"
+        ]
+      },
+      {
+        "name": "Rosa",
+        "image": "https://i.imgur.com/nWpiHZt.jpg",
+        "carousel": [
+          "https://i.imgur.com/nWpiHZt.jpg",
+          "https://i.imgur.com/sVkQCzo.jpg",
+          "https://i.imgur.com/zzjJZu2.jpg",
+          "https://i.imgur.com/bKi8OV6.jpg",
+          "https://i.imgur.com/E0ur5w2.jpg",
+          "https://i.imgur.com/p5hDkzl.jpg"
+        ]
+      },
+      {
+        "name": "Terracota",
+        "image": "https://i.imgur.com/UbbdLTg.jpg",
+        "carousel": [
+          "https://i.imgur.com/UbbdLTg.jpg",
+          "https://i.imgur.com/n3MXzMT.jpg",
+          "https://i.imgur.com/tsgzRO7.jpg",
+          "https://i.imgur.com/MLqx7aY.jpg"
+        ]
+      }
+    ],
+    "voltage": null,
+    "carousel": [
+      "https://i.imgur.com/3LrwcBJ.jpg",
+      "https://i.imgur.com/s8StDGC.jpg",
+      "https://i.imgur.com/fxmUVjm.jpg",
+      "https://i.imgur.com/e6UQUDY.jpg",
+      "https://i.imgur.com/poCADAs.jpg",
+      "https://i.imgur.com/YsGZx4t.jpg",
+      "https://i.imgur.com/ytAkNHN.jpg",
+      "https://i.imgur.com/NbDt2qO.jpg"
+    ],
+    "photos": [
+      "https://i.imgur.com/WoLgs7V.jpg",
+      "https://i.imgur.com/pqEoSqq.jpg",
+      "https://i.imgur.com/ppVmJEY.jpg",
+      "https://i.imgur.com/DnvXcyM.jpg"
+    ],
+    "reviews": [
+      [],
+      [],
+      []
+    ],
+    "hideReviews": false,
+    "category": "Bebês",
+    "features": [
+      "Modelo Torino da Galzerano.",
+      "Disponível em três opções de cor.",
+      "Assento acolchoado.",
+      "Bandeja com atividades.",
+      "Estrutura compacta para uso doméstico."
+    ],
+    "specGroups": [
+      {
+        "title": "Características gerais",
+        "rows": [
+          [
+            "Marca",
+            "Galzerano"
+          ],
+          [
+            "Modelo",
+            "Torino"
+          ],
+          [
+            "Tipo",
+            "Andador infantil"
+          ],
+          [
+            "Quantidade de cores",
+            "3"
+          ]
+        ]
+      },
+      {
+        "title": "Opções disponíveis",
+        "rows": [
+          [
+            "Cores",
+            "Marrom e Laranja, Rosa e Terracota"
+          ],
+          [
+            "Assento",
+            "Acolchoado"
+          ],
+          [
+            "Bandeja",
+            "Com atividades"
+          ]
+        ]
+      },
+      {
+        "title": "Cuidados",
+        "rows": [
+          [
+            "Uso",
+            "Sempre com supervisão de um responsável"
+          ],
+          [
+            "Montagem",
+            "Seguir o manual do fabricante"
+          ],
+          [
+            "Limpeza",
+            "Conforme as orientações do fabricante"
+          ]
+        ]
+      }
+    ]
   }
 ]

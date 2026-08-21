@@ -135,7 +135,14 @@ const COMODA_VERONA: ReviewText[] = [
   { author: "Rodrigo Santos", text: "Gostei do espaço interno e da divisão entre gavetas, portas e cabideiro. A cor ficou igual à apresentada no anúncio.", likes: 207 },
 ];
 
+const ANDADOR_TORINO: ReviewText[] = [
+  { author: "Ana Paula R.", text: "O andador chegou bem embalado e a cor correspondeu às fotos. A montagem foi simples seguindo o manual.", likes: 219 },
+  { author: "Rodrigo Santos", text: "Gostei do acabamento, do assento e da bandeja. O produto chegou protegido e conforme o anúncio.", likes: 186 },
+  { author: "Carla Mendes", text: "O modelo é bonito e compacto. A opção de cor ficou igual à apresentada na página.", likes: 154 },
+];
+
 export const REVIEWS_BY_PRODUCT: Record<string, ReviewText[]> = {
+  "3078200025": ANDADOR_TORINO,
   "8501150023": ESMERILHADEIRA,
   "4569300024": COMODA_VERONA,
   "9218300153": BICICLETA,
