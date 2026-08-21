@@ -74,7 +74,15 @@ const pageHtmlWithRelated =
       : `${pageHtmlWithoutOldRelated}${relatedSection}`;
 
 const relatedFallbackScript = buildRelatedFallbackScript();
-const injectedTail = `${relatedFallbackScript}${SELLER_MODAL_HTML}${SELLER_MODAL_SCRIPT}`;
+const productLoadingUi = `<style>
+#product-navigation-spinner{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;pointer-events:none;background:transparent!important}
+#product-navigation-spinner[data-visible="true"]{display:flex}
+#product-navigation-spinner span{display:block;width:58px;height:58px;border:6px solid transparent;border-top-color:#3483fa;border-right-color:#3483fa;border-bottom-color:#3483fa;border-radius:50%;background:transparent!important;animation:product-spin .75s linear infinite}
+@keyframes product-spin{to{transform:rotate(360deg)}}
+</style>
+<div id="product-navigation-spinner" aria-label="Carregando produto" role="status"><span></span></div>
+<script>(function(){function spinner(){return document.getElementById("product-navigation-spinner")}function show(){var el=spinner();if(el)el.setAttribute("data-visible","true")}function hide(){var el=spinner();if(el)el.removeAttribute("data-visible")}document.addEventListener("click",function(event){var target=event.target;if(!(target instanceof Element))return;var link=target.closest('a[href*="/produto/"]');if(link)show()},true);window.addEventListener("pageshow",hide);})();</script>`;
+const injectedTail = `${relatedFallbackScript}${productLoadingUi}${SELLER_MODAL_HTML}${SELLER_MODAL_SCRIPT}`;
 const pageHtml = pageHtmlWithRelated.includes("</body>")
   ? pageHtmlWithRelated.replace("</body>", `${injectedTail}</body>`)
   : `${pageHtmlWithRelated}${injectedTail}`;
