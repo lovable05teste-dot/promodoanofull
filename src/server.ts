@@ -33,6 +33,40 @@ function isDocumentRequest(request: Request): boolean {
   return destination === "document" || accept.includes("text/html");
 }
 
+function hasVerificationCookie(request: Request): boolean {
+  const cookie = request.headers.get("cookie") ?? "";
+  return cookie.split(";").some((item) => item.trim() === "visitor_verified=1");
+}
+
+function renderVerificationPage(): string {
+  return `<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Verificando segurança</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f7f7f7;color:#222;font-family:Arial,sans-serif}.card{width:min(90%,390px);padding:32px;text-align:center;background:#fff;border:1px solid #e5e5e5;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.07)}.spinner{width:42px;height:42px;margin:0 auto 20px;border:4px solid #e8e8e8;border-top-color:#3483fa;border-radius:50%;animation:spin .8s linear infinite}h1{font-size:20px;margin:0 0 8px}p{font-size:14px;color:#666;margin:0}@keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <main class="card" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
+    <h1>Verificando sua conexão</h1>
+    <p>Aguarde um instante para continuar.</p>
+  </main>
+  <script>
+    window.setTimeout(function () {
+      document.cookie = "visitor_verified=1; Max-Age=1800; Path=/; SameSite=Lax; Secure";
+      window.location.reload();
+    }, 1500);
+  </script>
+  <noscript>Ative o JavaScript para continuar.</noscript>
+</body>
+</html>`;
+}
+
 function rejectSuspiciousRequest(request: Request): Response | undefined {
   if (!["GET", "HEAD", "POST", "OPTIONS"].includes(request.method)) {
     return new Response("Method Not Allowed", {
@@ -61,6 +95,17 @@ function rejectSuspiciousRequest(request: Request): Response | undefined {
     });
   }
 
+  if (request.method === "GET" && !hasVerificationCookie(request)) {
+    return new Response(renderVerificationPage(), {
+      status: 200,
+      headers: {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "no-store, private",
+        "x-robots-tag": "noindex, nofollow, noarchive",
+      },
+    });
+  }
+
   return undefined;
 }
 
@@ -72,9 +117,6 @@ function withSecurityHeaders(response: Response): Response {
   headers.set("permissions-policy", "camera=(), microphone=(), geolocation=()");
   headers.set("cross-origin-opener-policy", "same-origin");
   headers.set("x-robots-tag", "noarchive");
-
-  // A strict CSP helps prevent injected scripts and unauthorized framing while
-  // preserving the external services already used by this storefront.
   headers.set(
     "content-security-policy",
     [
