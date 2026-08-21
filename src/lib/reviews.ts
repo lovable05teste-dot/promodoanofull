@@ -124,7 +124,20 @@ const BICICLETA: ReviewText[] = [
   { author: "Carla Mendes", text: "Gostei da bicicleta e das opções de cor e tamanho do quadro. Chegou protegida e sem avarias.", likes: 157 },
 ];
 
+const ESMERILHADEIRA: ReviewText[] = [
+  { author: "Ana Paula R.", text: "A esmerilhadeira chegou bem embalada e correspondeu às fotos. O tamanho é prático e a empunhadura ajuda bastante no controle.", likes: 226 },
+  { author: "Rodrigo Santos", text: "Produto recebido conforme o anúncio e na voltagem escolhida. Gostei do acabamento e da potência para os serviços do dia a dia.", likes: 194 },
+  { author: "Carla Mendes", text: "Chegou protegida e com os itens organizados. A máquina tem boa pegada e funcionamento simples.", likes: 168 },
+];
+
+const COMODA_VERONA: ReviewText[] = [
+  { author: "Ana Paula R.", text: "A cômoda chegou bem protegida e o acabamento corresponde às fotos. As gavetas e o espaço do cabideiro ajudam muito na organização.", likes: 241 },
+  { author: "Rodrigo Santos", text: "Gostei do espaço interno e da divisão entre gavetas, portas e cabideiro. A cor ficou igual à apresentada no anúncio.", likes: 207 },
+];
+
 export const REVIEWS_BY_PRODUCT: Record<string, ReviewText[]> = {
+  "8501150023": ESMERILHADEIRA,
+  "4569300024": COMODA_VERONA,
   "9218300153": BICICLETA,
   "6549324": PANELAS,
   "8198000010": CHURRASQUEIRA,
