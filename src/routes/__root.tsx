@@ -154,7 +154,7 @@ function ProductNavigationSpinner() {
           borderBottomColor: "#3483fa",
           borderRadius: "50%",
           background: "transparent",
-          animation: "spin 0.75s linear infinite",
+          animation: "product-navigation-spin 0.75s linear infinite",
         }}
       />
     </div>
