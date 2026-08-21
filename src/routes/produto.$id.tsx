@@ -121,10 +121,12 @@ function ProductView({ p }: { p: Product }) {
   const startX = useRef<number | null>(null);
   const dx = useRef(0);
 
-  const related = useMemo(
-    () => ALL_PRODUCTS.filter((x) => x.id !== p.id).slice(0, 12),
-    [p.id]
-  );
+  const related = useMemo(() => {
+    const currentCategory = categoryKey(p.category);
+    return ALL_PRODUCTS.filter(
+      (x) => x.id !== p.id && categoryKey(x.category) === currentCategory,
+    ).slice(0, 12);
+  }, [p.id, p.category]);
 
   const alsoBought = useMemo(
     () => ALL_PRODUCTS.filter((x) => x.id !== p.id).slice().reverse().slice(0, 12),
@@ -973,6 +975,11 @@ function ProductView({ p }: { p: Product }) {
       <SiteFooter />
     </div>
   );
+}
+
+function categoryKey(category: string): string {
+  // "Casa, Móveis e Decoração" e "Casa" pertencem ao mesmo grupo principal.
+  return category.toLocaleLowerCase("pt-BR").split(",")[0].trim();
 }
 
 function computeOffPct(oldP: string, newP: string): number {
