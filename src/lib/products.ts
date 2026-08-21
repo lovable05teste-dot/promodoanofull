@@ -7,10 +7,12 @@ export type Product = {
   newPrice: string;
   colors: string[] | null;
   activeColor?: string;
+  compactColorSelector?: boolean;
   colorVariants?: {
     name: string;
     swatch?: string;
     image?: string;
+    carousel?: string[];
     oldPrice?: string;
     newPrice?: string;
   }[];
