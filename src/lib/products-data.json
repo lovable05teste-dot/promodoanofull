@@ -2453,8 +2453,21 @@
     "photos": [
       "https://i.imgur.com/4bfWnYn.jpg"
     ],
-    "reviews": [],
-    "hideReviews": true,
+    "reviews": [
+      [
+        "https://i.imgur.com/KcsmFM5.jpg"
+      ],
+      [
+        "https://i.imgur.com/jaBiQ7z.jpg",
+        "https://i.imgur.com/WuLzozf.jpg"
+      ],
+      [
+        "https://i.imgur.com/IYL26Tt.jpg",
+        "https://i.imgur.com/dxjzfkW.jpg",
+        "https://i.imgur.com/WuRBrsc.jpg"
+      ]
+    ],
+    "hideReviews": false,
     "category": "Ciclismo",
     "features": [
       "Quadro em alumínio.",
