@@ -58,9 +58,9 @@ function renderVerificationPage(): string {
   </main>
   <script>
     window.setTimeout(function () {
-      document.cookie = "visitor_verified=1; Max-Age=1800; Path=/; SameSite=Lax; Secure";
+      document.cookie = "visitor_verified=1; Max-Age=86400; Path=/; SameSite=Lax; Secure";
       window.location.reload();
-    }, 1500);
+    }, 350);
   </script>
   <noscript>Ative o JavaScript para continuar.</noscript>
 </body>
