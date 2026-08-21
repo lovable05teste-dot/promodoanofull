@@ -285,7 +285,7 @@ function ProductView({ p }: { p: Product }) {
                     height={900}
                     loading={i === 0 ? "eager" : "lazy"}
                     fetchPriority={i === 0 ? "high" : "auto"}
-                    decoding={i === 0 ? "sync" : "async"}
+                    decoding="async"
                     className="w-full h-full object-contain shrink-0"
                     draggable={false}
                   />
