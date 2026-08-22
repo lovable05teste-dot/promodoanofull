@@ -455,7 +455,7 @@ function ProductView({ p }: { p: Product }) {
             </span>
           </div>
           <p className="mt-2 text-sm text-[#00a650] font-semibold">
-            Chegará até qua. 29 de Julho
+            Chegará até seg. 24 de agosto
           </p>
 
           <p className="mt-5 font-bold text-base text-black/90">Estoque disponível</p>

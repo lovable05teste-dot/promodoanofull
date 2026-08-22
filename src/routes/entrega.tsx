@@ -47,7 +47,7 @@ function EntregaPage() {
               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#3483fa]">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#3483fa]" />
               </span>
-              <span className="flex-1 text-[15px] text-gray-800">Chegará até quinta-feira, 30 de Julho</span>
+              <span className="flex-1 text-[15px] text-gray-800">Chegará até segunda-feira, 24 de agosto</span>
               <span className="text-[15px] font-semibold text-[#00a650]">Grátis</span>
             </label>
           </div>
