@@ -56,6 +56,14 @@ function buildRelatedSection() {
   return `<section id="related-products-fixed" data-related-products="true" style="display:block !important;padding:24px 16px;border-top:1px solid #e5e7eb;max-width:1200px;margin:0 auto;background:#fff;clear:both;overflow:visible;visibility:visible !important;opacity:1 !important;min-height:390px;"><h2 style="font-size:18px;line-height:1.25;font-weight:600;margin:0 0 16px;color:#333;">Quem viu este produto também comprou</h2><div data-related-scroller="true" style="display:flex !important;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding-bottom:14px;-webkit-overflow-scrolling:touch;min-height:350px;visibility:visible !important;opacity:1 !important;">${cards}</div></section>`;
 }
 
+function buildRelatedFallbackScript() {
+  const cards = ALL_PRODUCTS.filter((product) => product.id !== MAIN_PRODUCT_ID)
+    .map(productCard)
+    .join("");
+
+  return `<script>(function(){var cards=${JSON.stringify(cards)};function forceStyles(section,scroller){section.id='related-products-fixed';section.setAttribute('data-related-products','true');section.style.cssText='display:block !important;padding:24px 16px;border-top:1px solid #e5e7eb;max-width:1200px;margin:0 auto;background:#fff;clear:both;overflow:visible;visibility:visible !important;opacity:1 !important;min-height:390px;';scroller.setAttribute('data-related-scroller','true');scroller.style.cssText='display:flex !important;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding-bottom:14px;-webkit-overflow-scrolling:touch;min-height:350px;visibility:visible !important;opacity:1 !important;';}function mount(){var section=document.getElementById('related-products-fixed')||document.querySelector('[data-related-products="true"]');if(!section){section=document.createElement('section');section.innerHTML='<h2 style="font-size:18px;line-height:1.25;font-weight:600;margin:0 0 16px;color:#333;">Quem viu este produto também comprou</h2><div data-related-scroller="true"></div>';var footer=document.querySelector('footer');if(footer&&footer.parentNode){footer.parentNode.insertBefore(section,footer)}else{document.body.appendChild(section)}}var scroller=section.querySelector('[data-related-scroller="true"]');if(!scroller){scroller=document.createElement('div');section.appendChild(scroller)}forceStyles(section,scroller);if(scroller.querySelectorAll('[data-product-card]').length<5){scroller.innerHTML=cards}Array.prototype.forEach.call(scroller.querySelectorAll('[data-product-card]'),function(card){card.style.setProperty('display','block','important');card.style.setProperty('visibility','visible','important');card.style.setProperty('opacity','1','important');card.style.pointerEvents='auto';var img=card.querySelector('img');if(img){img.style.setProperty('display','block','important');img.style.setProperty('visibility','visible','important');img.style.setProperty('opacity','1','important')}card.onclick=function(e){e.preventDefault();var href=card.getAttribute('href');if(href) window.location.href=href.split('?')[0]+(window.location.search||'');};});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',mount)}else{mount()}setTimeout(mount,100);setTimeout(mount,500);setTimeout(mount,1500);window.addEventListener('pageshow',mount);})();</script>`;
+}
+
 const relatedSectionPattern = /<section class="px-4 md:px-8 py-6 border-t border-gray-200 max-w-\[1200px\] mx-auto"><h2 class="text-lg font-semibold mb-4">Quem viu este produto também comprou<\/h2>[\s\S]*?<\/section>/;
 const relatedSection = buildRelatedSection();
 const optimizedHtml = html.replace(
@@ -74,7 +82,8 @@ const pageHtmlWithRelated =
       : `${pageHtmlWithoutOldRelated}${relatedSection}`;
 
 const homepageTrackingScript = buildHomepageTrackingScript();
-const injectedTail = `${homepageTrackingScript}${SELLER_MODAL_HTML}${SELLER_MODAL_SCRIPT}`;
+const relatedFallbackScript = buildRelatedFallbackScript();
+const injectedTail = `${homepageTrackingScript}${relatedFallbackScript}${SELLER_MODAL_HTML}${SELLER_MODAL_SCRIPT}`;
 const pageHtml = pageHtmlWithRelated.includes("</body>")
   ? pageHtmlWithRelated.replace("</body>", `${injectedTail}</body>`)
   : `${pageHtmlWithRelated}${injectedTail}`;
