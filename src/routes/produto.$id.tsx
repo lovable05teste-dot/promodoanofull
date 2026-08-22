@@ -60,6 +60,12 @@ export const Route = createFileRoute("/produto/$id")({
 
 const PLACEHOLDER = "/clone-assets/images/placeholder.svg";
 
+function optimizedImage(src: string, size: "m" | "h" = "h") {
+  const match = src.match(/^https:\/\/i\.imgur\.com\/([A-Za-z0-9]+)\.(?:jpg|jpeg|png|webp)$/i);
+  if (!match) return src;
+  return `https://i.imgur.com/${match[1]}${size}.jpg`;
+}
+
 // Algumas imagens hospedadas externamente podem ter sido removidas (404).
 // Troca qualquer imagem quebrada por um placeholder para a página não ficar bugada.
 function useBrokenImageFallback() {
@@ -126,14 +132,10 @@ function ProductView({ p }: { p: Product }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const startX = useRef<number | null>(null);
   const dx = useRef(0);
+  const checkoutStartedRef = useRef(false);
 
   const related = useMemo(
-    () => ALL_PRODUCTS.filter((x) => x.id !== p.id).slice(0, 12),
-    [p.id]
-  );
-
-  const alsoBought = useMemo(
-    () => ALL_PRODUCTS.filter((x) => x.id !== p.id).slice().reverse().slice(0, 12),
+    () => ALL_PRODUCTS.filter((x) => x.id !== p.id),
     [p.id]
   );
 
@@ -157,25 +159,30 @@ function ProductView({ p }: { p: Product }) {
   }
 
   async function goCheckout() {
-    // 1º: marca o IC na Utmify ANTES de qualquer outro rastreamento/navegação
+    if (checkoutStartedRef.current) return;
+    checkoutStartedRef.current = true;
+
+    const icPayload = {
+      content_ids: [p.id],
+      content_name: p.title,
+      value: newPrice,
+      currency: "BRL",
+    };
+
+    // Inicia o IC imediatamente, mas não segura a navegação por vários segundos.
+    // O fetch usa keepalive e continua durante a troca de página.
     try {
-      const icOk = await trackInitiateCheckout({
-        content_ids: [p.id],
-        content_name: p.title,
-        value: newPrice,
-        currency: "BRL",
-      });
-      if (!icOk) {
+      const icOk = await Promise.race<boolean | null>([
+        trackInitiateCheckout(icPayload),
+        new Promise<null>((resolve) => window.setTimeout(() => resolve(null), 400)),
+      ]);
+      if (icOk === false) {
         console.warn("[IC] confirmação principal falhou; enviando fallback somente de IC.");
-        trackInitiateCheckoutFallback({
-          content_ids: [p.id],
-          content_name: p.title,
-          value: newPrice,
-          currency: "BRL",
-        });
+        trackInitiateCheckoutFallback(icPayload);
       }
     } catch (e) {
       console.error("[IC] falha ao marcar InitiateCheckout:", e);
+      trackInitiateCheckoutFallback(icPayload);
     }
     try {
       localStorage.setItem(
@@ -286,7 +293,7 @@ function ProductView({ p }: { p: Product }) {
                 {carousel.map((src, i) => (
                   <img
                     key={i}
-                    src={src}
+                    src={Math.abs(i - idx) <= 2 ? optimizedImage(src, "h") : PLACEHOLDER}
                     alt={`Foto ${i + 1}`}
                     width={900}
                     height={900}
@@ -336,7 +343,7 @@ function ProductView({ p }: { p: Product }) {
                       }`}
                     >
                       <img
-                        src={v.image}
+                        src={optimizedImage(v.image, "m")}
                         alt={v.name}
                         width={150}
                         height={110}
@@ -782,7 +789,7 @@ function ProductView({ p }: { p: Product }) {
             {(showAllPhotos ? p.photos : p.photos.slice(0, 1)).map((src, i) => (
               <img
                 key={i}
-                src={src}
+                src={optimizedImage(src, "h")}
                 alt={`Foto do produto ${i + 1}`}
                 width={900}
                 height={900}
@@ -968,21 +975,7 @@ function ProductView({ p }: { p: Product }) {
         </section>
         )}
 
-        {/* Quem viu este produto também comprou */}
-        {alsoBought.length > 0 && (
-          <LazySection minHeight={420}>
-          <section className="px-4 md:px-8 py-6 border-t border-gray-200">
-            <h2 className="text-lg font-semibold mb-4">Quem viu este produto também comprou</h2>
-            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 md:mx-0 md:px-0">
-              {alsoBought.map((r) => (
-                <div key={r.id} className="snap-start shrink-0 w-[70%] sm:w-[280px]">
-                  <RelatedCard p={r} />
-                </div>
-              ))}
-            </div>
-          </section>
-          </LazySection>
-        )}
+
 
       </main>
       <SiteFooter />
@@ -1078,7 +1071,7 @@ function ReviewBlock({
           {images.map((src, i) => (
             <img
               key={i}
-              src={src}
+              src={optimizedImage(src, "m")}
               alt={`Foto de avaliação ${n} — imagem ${i + 1}`}
               width={96}
               height={96}
@@ -1163,7 +1156,7 @@ function ReviewBlock({
           {images.map((src, i) => (
             <img
               key={i}
-              src={src}
+              src={optimizedImage(src, "m")}
               alt={`Avaliação ${n} — foto ${i + 1}`}
               width={96}
               height={96}
@@ -1241,7 +1234,7 @@ function RelatedCard({ p }: { p: Product }) {
     >
       <div className="aspect-square bg-white overflow-hidden rounded">
         <img
-          src={p.carousel[0]}
+          src={optimizedImage(p.carousel[0], "m")}
           alt={p.title}
           className="w-full h-full object-contain"
           width={300}
