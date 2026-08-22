@@ -566,21 +566,7 @@ function ProductView({ p }: { p: Product }) {
           </button>
         </section>
 
-        {/* Produtos relacionados */}
-        {related.length > 0 && (
-          <LazySection minHeight={420}>
-          <section className="px-4 md:px-8 py-6 border-t border-gray-200">
-            <h2 className="text-lg font-semibold mb-4">Produtos relacionados</h2>
-            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 md:mx-0 md:px-0">
-              {related.map((r) => (
-                <div key={r.id} className="snap-start shrink-0 w-[70%] sm:w-[280px]">
-                  <RelatedCard p={r} />
-                </div>
-              ))}
-            </div>
-          </section>
-          </LazySection>
-        )}
+
 
         {/* Características do produto */}
         {p.specGroups && p.specGroups.length > 0 && (
@@ -976,6 +962,22 @@ function ProductView({ p }: { p: Product }) {
         )}
 
 
+
+        {/* Produtos relacionados */}
+        {related.length > 0 && (
+          <LazySection minHeight={420}>
+          <section className="px-4 md:px-8 py-6 border-t border-gray-200">
+            <h2 className="text-lg font-semibold mb-4">Produtos relacionados</h2>
+            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 md:mx-0 md:px-0">
+              {related.map((r) => (
+                <div key={r.id} className="snap-start shrink-0 w-[70%] sm:w-[280px]">
+                  <RelatedCard p={r} />
+                </div>
+              ))}
+            </div>
+          </section>
+          </LazySection>
+        )}
 
       </main>
       <SiteFooter />
