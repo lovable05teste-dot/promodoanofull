@@ -5,9 +5,11 @@ import { SELLER_MODAL_HTML, SELLER_MODAL_SCRIPT } from "../lib/seller-modal";
 
 const PLACEHOLDER = "/clone-assets/images/placeholder.svg";
 const MAIN_PRODUCT_ID = "6549324";
+const UTMIFY_PIXEL_LOADER =
+  'window.pixelId = "6a8906df65a3354808dbeac2";(function(){var script=document.createElement("script");script.src="https://cdn.utmify.com.br/scripts/pixel/pixel.js";script.async=true;script.defer=true;(document.head||document.documentElement).appendChild(script);})();';
 
 function buildHomepageTrackingScript() {
-  return "<script>(function(){var PIXEL=\"6a8906df65a3354808dbeac2\";window.pixelId=window.pixelId||PIXEL;var loaded=false;function loadPixel(){if(loaded)return;loaded=true;[\"https://cdn.utmify.com.br/scripts/pixel/pixel.js\",\"https://cdn.utmify.com.br/scripts/utms/latest.js\"].forEach(function(src,i){var s=document.createElement(\"script\");s.async=true;s.defer=true;s.src=src;if(i===1){s.setAttribute(\"data-utmify-prevent-xcod-sck\",\"\");s.setAttribute(\"data-utmify-prevent-subids\",\"\");}document.head.appendChild(s);});}[\"pointerdown\",\"keydown\",\"touchstart\"].forEach(function(name){window.addEventListener(name,loadPixel,{once:true,passive:true});});if(\"requestIdleCallback\"in window){requestIdleCallback(loadPixel,{timeout:2500});}else{setTimeout(loadPixel,1200);}function sendOfficialIC(meta,done){var payload=Object.assign({event_name:\"InitiateCheckout\",status:\"IC\"},meta||{});var tries=0;function attempt(){try{if(window.utmify&&typeof window.utmify.track===\"function\"){window.utmify.track(\"InitiateCheckout\",payload);done();return;}if(window.utmify&&typeof window.utmify.trackEvent===\"function\"){window.utmify.trackEvent(\"InitiateCheckout\",payload);done();return;}if(typeof window.utmifyTrack===\"function\"){window.utmifyTrack(\"InitiateCheckout\",payload);done();return;}}catch(e){}tries+=1;if(tries<6){setTimeout(attempt,50);return;}window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:\"InitiateCheckout\"},payload));done();}loadPixel();attempt();}document.addEventListener(\"click\",function(e){var target=e.target;var btn=target&&target.closest?target.closest(\"button\"):null;if(!btn)return;var label=(btn.textContent||\"\").replace(/\\s+/g,\" \").trim();if(label!==\"Comprar agora\"&&label!==\"Adicionar ao carrinho\")return;e.preventDefault();e.stopImmediatePropagation();var item={id:\"6549324\",title:\"Jogo De Panelas Indução Antiaderente Cerâmica 10 Peças PPG PFOA Free Baunilha\",price:\"61,93\",image:\"https://i.postimg.cc/Gtj1SkJR/D-NQ-NP-2X-754218-MLA98733384331-112025-F.webp\"};try{localStorage.setItem(\"checkout_product\",JSON.stringify(item));}catch(err){}var moved=false;function next(){if(moved)return;moved=true;window.location.href=\"/endereco\"+(window.location.search||\"\");}sendOfficialIC({content_ids:[item.id],content_name:item.title,value:item.price,currency:\"BRL\"},next);setTimeout(next,400);},true);})();<\\/script>";
+  return `<script>${UTMIFY_PIXEL_LOADER}(function(){var checkoutLocked=false;function sendOfficialIC(meta){var payload=Object.assign({event_name:"InitiateCheckout",status:"IC"},meta||{});var sent=false;try{if(window.utmify&&typeof window.utmify.track==="function"){window.utmify.track("InitiateCheckout",payload);sent=true}else if(window.utmify&&typeof window.utmify.trackEvent==="function"){window.utmify.trackEvent("InitiateCheckout",payload);sent=true}else if(typeof window.utmifyTrack==="function"){window.utmifyTrack("InitiateCheckout",payload);sent=true}}catch(err){console.error("[UTMify] falha ao registrar InitiateCheckout:",err)}if(!sent){window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:"InitiateCheckout"},payload))}window.__utmify_ic_status={success:sent,queued:!sent,at:Date.now(),product:meta&&meta.content_ids};}document.addEventListener("click",function(e){var target=e.target;var btn=target&&target.closest?target.closest("button"):null;if(!btn)return;var label=(btn.textContent||"").replace(/\\s+/g," ").trim();if(label!=="Comprar agora"&&label!=="Adicionar ao carrinho")return;e.preventDefault();e.stopImmediatePropagation();if(checkoutLocked)return;checkoutLocked=true;var item={id:"6549324",title:"Jogo De Panelas Indução Antiaderente Cerâmica 10 Peças PPG PFOA Free Baunilha",price:61.93,image:"https://i.postimg.cc/Gtj1SkJR/D-NQ-NP-2X-754218-MLA98733384331-112025-F.webp"};try{localStorage.setItem("checkout_product",JSON.stringify(item))}catch(err){}sendOfficialIC({content_ids:[item.id],content_name:item.title,value:item.price,currency:"BRL"});window.location.href="/endereco"+(window.location.search||"");},true);})();<\\/script>`;
 }
 
 function escapeHtml(value: string) {
@@ -66,10 +68,11 @@ function buildRelatedFallbackScript() {
 
 const relatedSectionPattern = /<section class="px-4 md:px-8 py-6 border-t border-gray-200 max-w-\[1200px\] mx-auto"><h2 class="text-lg font-semibold mb-4">Quem viu este produto também comprou<\/h2>[\s\S]*?<\/section>/;
 const relatedSection = buildRelatedSection();
-const optimizedHtml = html.replace(
-  /<script[^>]+src="\/clone-assets\/js\/~flock\.js"[^>]*><\/script>/,
-  "",
-);
+const optimizedHtml = html
+  .replace(/<script[^>]+src="\/clone-assets\/js\/~flock\.js"[^>]*><\/script>/, "")
+  .replace(/<script[^>]+src="\/clone-assets\/js\/latest\.js"[^>]*><\/script>/, "")
+  .replace(/<script>\s*window\.pixelId\s*=\s*"[^"]+";[\s\S]*?<\/script>/, "")
+  .replace(/<script[^>]+src="\/clone-assets\/js\/pixel\.js"[^>]*><\/script>/, "");
 const pageHtmlWithoutOldRelated = optimizedHtml.replace(relatedSectionPattern, "");
 const footerOpenIndex = pageHtmlWithoutOldRelated.search(/<footer[\s>]/);
 const pageHtmlWithRelated =

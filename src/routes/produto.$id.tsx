@@ -170,7 +170,7 @@ function ProductView({ p }: { p: Product }) {
     const icPayload = {
       content_ids: [p.id],
       content_name: p.title,
-      value: newPrice,
+      value: Number(newPrice.replace(/\./g, "").replace(",", ".")),
       currency: "BRL",
     };
 
