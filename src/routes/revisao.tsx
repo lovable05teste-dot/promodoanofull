@@ -100,7 +100,7 @@ function RevisaoPage() {
                   FULL
                 </span>
               </div>
-              <div className="text-[13px] text-gray-800 mt-1">Quinta-feira, 30 de Julho</div>
+              <div className="text-[13px] text-gray-800 mt-1">Segunda-feira, 24 de agosto</div>
               <div className="text-[14px] text-gray-900 mt-1 font-medium leading-snug">{product.title}</div>
               <div className="text-[12px] text-gray-500 mt-1">Quantidade: 1</div>
             </div>
