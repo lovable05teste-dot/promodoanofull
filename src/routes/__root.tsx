@@ -12,7 +12,6 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { captureUtms } from "../lib/utm";
-import { UTMIFY_PIXEL_LOADER } from "../lib/utmify-pixel";
 
 function NotFoundComponent() {
   return (
@@ -110,7 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     scripts: [
       {
         // Único pixel Utmify autorizado pelo usuário.
-        children: UTMIFY_PIXEL_LOADER,
+        children: 'window.pixelId = "6a8906df65a3354808dbeac2";(function(){var script=document.createElement("script");script.src="https://cdn.utmify.com.br/scripts/pixel/pixel.js";script.async=true;script.defer=true;(document.head||document.documentElement).appendChild(script);})();',
       },
     ],
   }),
