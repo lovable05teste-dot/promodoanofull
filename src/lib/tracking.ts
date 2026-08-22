@@ -1,230 +1,147 @@
-import { getUtmQuery } from "./utm";
+type UtmifyWindow = Window & {
+  utmify?: {
+    track?: (name: string, params?: Record<string, unknown>) => void;
+    trackEvent?: (name: string, params?: Record<string, unknown>) => void;
+  };
+  utmifyTrack?: (name: string, params?: Record<string, unknown>) => void;
+  dataLayer?: Array<Record<string, unknown>>;
+  __utmify_ic_status?: Record<string, unknown>;
+};
 
-// Utmify event helper — safely fires an event through whichever
-// interface the Utmify pixel script exposes, without altering any
-// existing button logic.
+function getUtmifyWindow() {
+  return window as UtmifyWindow;
+}
+
+function sendWithOfficialPixel(name: string, params?: Record<string, unknown>): boolean {
+  const w = getUtmifyWindow();
+
+  try {
+    if (typeof w.utmify?.track === "function") {
+      w.utmify.track(name, params);
+      return true;
+    }
+    if (typeof w.utmify?.trackEvent === "function") {
+      w.utmify.trackEvent(name, params);
+      return true;
+    }
+    if (typeof w.utmifyTrack === "function") {
+      w.utmifyTrack(name, params);
+      return true;
+    }
+  } catch (error) {
+    console.error(`[UTMify] falha ao registrar ${name}:`, error);
+  }
+
+  return false;
+}
+
+function queueForPixel(name: string, params?: Record<string, unknown>) {
+  const w = getUtmifyWindow();
+  try {
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({ event: name, ...(params ?? {}) });
+  } catch (error) {
+    console.error(`[UTMify] falha ao enfileirar ${name}:`, error);
+  }
+}
+
 export function utmifyTrack(
   name: "PageView" | "ViewContent" | "InitiateCheckout" | (string & {}),
   params?: Record<string, unknown>,
 ) {
   if (typeof window === "undefined") return;
-  const w = window as unknown as {
-    utmify?: {
-      track?: (n: string, p?: Record<string, unknown>) => void;
-      trackEvent?: (n: string, p?: Record<string, unknown>) => void;
-    };
-    utmifyTrack?: (n: string, p?: Record<string, unknown>) => void;
-    dataLayer?: Array<Record<string, unknown>>;
-  };
-  try { w.utmify?.track?.(name, params); } catch { /* noop */ }
-  try { w.utmify?.trackEvent?.(name, params); } catch { /* noop */ }
-  try { w.utmifyTrack?.(name, params); } catch { /* noop */ }
-  try {
-    w.dataLayer = w.dataLayer || [];
-    w.dataLayer.push({ event: name, ...(params ?? {}) });
-  } catch { /* noop */ }
+  if (!sendWithOfficialPixel(name, params)) queueForPixel(name, params);
 }
 
 export const CHECKOUT_URL = "https://go.invictuspay.app.br/gpn09mwxri";
 
-// ── InitiateCheckout (IC) ─────────────────────────────────────────────
-// Marca o status IC na Utmify de forma isolada, com try/catch,
-// validação e log de confirmação. Nunca bloqueia o fluxo de checkout.
 let pendingInitiateCheckout: Promise<boolean> | null = null;
-let initiateCheckoutConfirmed = false;
+let pendingInitiateCheckoutKey = "";
+let lastConfirmedKey = "";
+let lastConfirmedAt = 0;
 
-type UtmifyWindow = Window & {
-  pixelId?: string;
-  utmify?: {
-    track?: (n: string, p?: Record<string, unknown>) => void;
-    trackEvent?: (n: string, p?: Record<string, unknown>) => void;
-  };
-  utmifyTrack?: (n: string, p?: Record<string, unknown>) => void;
-  dataLayer?: Array<Record<string, unknown>>;
-  __ic_sent?: boolean;
-  __utmify_ic_status?: Record<string, unknown>;
-};
-
-function readStoredLead(): Record<string, unknown> {
+function initiateCheckoutKey(params?: Record<string, unknown>) {
   try {
-    const raw = window.localStorage.getItem("lead");
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+    return JSON.stringify([
+      params?.content_ids ?? null,
+      params?.content_name ?? null,
+      params?.value ?? null,
+    ]);
   } catch {
-    return {};
+    return String(params?.content_name ?? "checkout");
   }
 }
 
-function getCookieByName(...names: string[]) {
-  const cookies = document.cookie ? document.cookie.split(";") : [];
-  for (const cookie of cookies) {
-    const [name, ...parts] = cookie.trim().split("=");
-    if (names.includes(name)) return decodeURIComponent(parts.join("="));
-  }
-  return undefined;
+function wait(ms: number) {
+  return new Promise<void>((resolve) => window.setTimeout(resolve, ms));
 }
 
-function getParam(name: string) {
-  try {
-    return new URLSearchParams(window.location.search).get(name) ?? undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-function buildUtmifyLead(w: UtmifyWindow): Record<string, unknown> {
-  const storedLead = readStoredLead();
-  const pixelId = typeof w.pixelId === "string" ? w.pixelId : storedLead.pixelId;
-
-  if (!pixelId) {
-    throw new Error("pixelId da Utmify não encontrado");
-  }
-
-  const utmQuery = getUtmQuery();
-
-  return {
-    ...storedLead,
-    pixelId,
-    userAgent: navigator.userAgent,
-    parameters: window.location.search || (utmQuery ? `?${utmQuery}` : ""),
-    fbc: storedLead.fbc ?? getCookieByName("_fbc", "fbc"),
-    fbp: storedLead.fbp ?? getCookieByName("_fbp", "fbp"),
-    gclid: storedLead.gclid ?? getParam("gclid"),
-    gbraid: storedLead.gbraid ?? getParam("gbraid"),
-    wbraid: storedLead.wbraid ?? getParam("wbraid"),
-    ttclid: storedLead.ttclid ?? getParam("ttclid"),
-    tbclid: storedLead.tbclid ?? getParam("tbclid"),
+async function sendInitiateCheckout(params?: Record<string, unknown>): Promise<boolean> {
+  const payload = {
+    event_name: "InitiateCheckout",
+    status: "IC",
+    ...(params ?? {}),
   };
-}
 
-function buildUtmifyEvent() {
-  const { protocol, hostname, pathname } = window.location;
-  return {
-    sourceUrl: `${protocol}//${hostname}${pathname}`.replace(/\/+$/, ""),
-    pageTitle: document.title.trim() || null,
-  };
-}
-
-async function postInitiateCheckoutToUtmify(params?: Record<string, unknown>): Promise<boolean> {
-  const w = window as UtmifyWindow;
-  const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 4500);
-
-  try {
-    const body = {
-      type: "InitiateCheckout",
-      lead: buildUtmifyLead(w),
-      event: buildUtmifyEvent(),
-      metadata: {
-        event_name: "InitiateCheckout",
-        status: "IC",
-        ...(params ?? {}),
-      },
-    };
-
-    const response = await fetch("https://tracking.utmify.com.br/tracking/v1/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      keepalive: true,
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      throw new Error(`Utmify IC respondeu HTTP ${response.status}`);
+  // O pixel é carregado no pointerdown. Aguarda por no máximo 300 ms
+  // e utiliza somente a interface oficial exposta pelo próprio pixel.
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    if (sendWithOfficialPixel("InitiateCheckout", payload)) {
+      getUtmifyWindow().__utmify_ic_status = { success: true, at: Date.now() };
+      return true;
     }
-
-    const result = await response.json().catch(() => null);
-    const leadId = result?.lead?._id;
-    const eventId = result?.event?._id;
-
-    if (!leadId || !eventId) {
-      throw new Error("Utmify IC sem confirmação de lead/evento");
-    }
-
-    try {
-      window.localStorage.setItem("lead", JSON.stringify(result.lead));
-    } catch {
-      // O IC já foi validado; falha ao cachear o lead não deve bloquear o checkout.
-    }
-
-    w.__ic_sent = true;
-    w.__utmify_ic_status = { success: true, leadId, eventId, at: Date.now() };
-    console.log("[IC] InitiateCheckout registrado com sucesso", { leadId, eventId });
-    return true;
-  } catch (error) {
-    w.__ic_sent = false;
-    w.__utmify_ic_status = { success: false, error: String(error), at: Date.now() };
-    console.error("[IC] falha ao registrar InitiateCheckout na Utmify:", error);
-    return false;
-  } finally {
-    window.clearTimeout(timeout);
+    await wait(50);
   }
+
+  // Se o script ainda não terminou de carregar, deixa o evento na fila.
+  queueForPixel("InitiateCheckout", payload);
+  getUtmifyWindow().__utmify_ic_status = { success: true, queued: true, at: Date.now() };
+  return true;
 }
 
 export function trackInitiateCheckout(params?: Record<string, unknown>): Promise<boolean> {
   if (typeof window === "undefined") return Promise.resolve(false);
-  if (initiateCheckoutConfirmed) return Promise.resolve(true);
-  if (pendingInitiateCheckout) return pendingInitiateCheckout;
 
-  pendingInitiateCheckout = postInitiateCheckoutToUtmify(params).then((ok) => {
-    initiateCheckoutConfirmed = ok;
-    if (!ok) pendingInitiateCheckout = null;
-    return ok;
-  });
+  const key = initiateCheckoutKey(params);
+  const now = Date.now();
 
-  return pendingInitiateCheckout;
+  // Bloqueia apenas duplo clique; um novo checkout real continua permitido.
+  if (key === lastConfirmedKey && now - lastConfirmedAt < 2000) {
+    return Promise.resolve(true);
+  }
+  if (pendingInitiateCheckout && pendingInitiateCheckoutKey === key) {
+    return pendingInitiateCheckout;
+  }
+
+  const request = sendInitiateCheckout(params);
+  pendingInitiateCheckout = request;
+  pendingInitiateCheckoutKey = key;
+
+  void request
+    .then((ok) => {
+      if (ok) {
+        lastConfirmedKey = key;
+        lastConfirmedAt = Date.now();
+      }
+    })
+    .finally(() => {
+      if (pendingInitiateCheckout === request) {
+        pendingInitiateCheckout = null;
+        pendingInitiateCheckoutKey = "";
+      }
+    });
+
+  return request;
 }
 
 export function trackInitiateCheckoutFallback(params?: Record<string, unknown>): void {
   if (typeof window === "undefined") return;
-  const w = window as unknown as {
-    utmify?: {
-      track?: (n: string, p?: Record<string, unknown>) => void;
-      trackEvent?: (n: string, p?: Record<string, unknown>) => void;
-    };
-    utmifyTrack?: (n: string, p?: Record<string, unknown>) => void;
-    dataLayer?: Array<Record<string, unknown>>;
-    __ic_sent?: boolean;
+  const payload = {
+    event_name: "InitiateCheckout",
+    status: "IC",
+    ...(params ?? {}),
   };
-
-  const payload = { event_name: "InitiateCheckout", status: "IC", ...(params ?? {}) };
-
-  try {
-    if (typeof w.utmify?.track === "function") {
-      w.utmify.track("InitiateCheckout", payload);
-    }
-  } catch (e) {
-    console.error("[IC] utmify.track falhou:", e);
+  if (!sendWithOfficialPixel("InitiateCheckout", payload)) {
+    queueForPixel("InitiateCheckout", payload);
   }
-
-  try {
-    if (typeof w.utmify?.trackEvent === "function") {
-      w.utmify.trackEvent("InitiateCheckout", payload);
-    }
-  } catch (e) {
-    console.error("[IC] utmify.trackEvent falhou:", e);
-  }
-
-  try {
-    if (typeof w.utmifyTrack === "function") {
-      w.utmifyTrack("InitiateCheckout", payload);
-    }
-  } catch (e) {
-    console.error("[IC] utmifyTrack falhou:", e);
-  }
-
-  // Fallback: dataLayer (sempre empurrado, mesmo se o pixel já respondeu)
-  try {
-    w.dataLayer = w.dataLayer || [];
-    w.dataLayer.push({ event: "InitiateCheckout", ...payload });
-  } catch (e) {
-    console.error("[IC] dataLayer push falhou:", e);
-  }
-
-  // Marca uma flag de checkout para o pixel da Utmify (intercepta cliques)
-  try {
-    localStorage.setItem("utmify_ic", JSON.stringify({ at: Date.now(), ...payload }));
-  } catch {}
 }
