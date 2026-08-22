@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { captureUtms } from "../lib/utm";
+import { UTMIFY_PIXEL_LOADER } from "../lib/utmify-pixel";
 
 function NotFoundComponent() {
   return (
@@ -108,10 +109,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       {
-        // Pixel Utmify — carregado fora do caminho crítico (idle / primeira interação),
-        // sem perder eventos: o pixelId é definido imediatamente.
-        children:
-          'window.pixelId = "6a8906df65a3354808dbeac2";(function(){var done=false;function load(){if(done)return;done=true;["https://cdn.utmify.com.br/scripts/pixel/pixel.js","https://cdn.utmify.com.br/scripts/utms/latest.js"].forEach(function(src,i){var s=document.createElement("script");s.async=true;s.defer=true;s.src=src;if(i===1){s.setAttribute("data-utmify-prevent-xcod-sck","");s.setAttribute("data-utmify-prevent-subids","");}document.head.appendChild(s);});}["pointerdown","keydown","touchstart","scroll"].forEach(function(e){window.addEventListener(e,load,{once:true,passive:true});});function schedule(){if("requestIdleCallback"in window){requestIdleCallback(load,{timeout:2500});}else{setTimeout(load,1200);}}if(document.readyState==="complete"){schedule();}else{window.addEventListener("load",schedule,{once:true});}})();',
+        // Único pixel Utmify autorizado pelo usuário.
+        children: UTMIFY_PIXEL_LOADER,
       },
     ],
   }),
