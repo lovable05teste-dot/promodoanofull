@@ -69,10 +69,10 @@ function buildRelatedFallbackScript() {
 const relatedSectionPattern = /<section class="px-4 md:px-8 py-6 border-t border-gray-200 max-w-\[1200px\] mx-auto"><h2 class="text-lg font-semibold mb-4">Quem viu este produto também comprou<\/h2>[\s\S]*?<\/section>/;
 const relatedSection = buildRelatedSection();
 const optimizedHtml = html
-  .replace(/<script[^>]+src="\\/clone-assets\\/js\\/~flock\\.js"[^>]*><\\/script>/, "")
-  .replace(/<script[^>]+src="\\/clone-assets\\/js\\/latest\\.js"[^>]*><\\/script>/, "")
-  .replace(/<script>\\s*window\\.pixelId\\s*=\\s*"[^"]+";[\\s\\S]*?<\\/script>/, "")
-  .replace(/<script[^>]+src="\\/clone-assets\\/js\\/pixel\\.js"[^>]*><\\/script>/, "");
+  .replace(/<script[^>]+src="\/clone-assets\/js\/~flock\.js"[^>]*><\/script>/, "")
+  .replace(/<script[^>]+src="\/clone-assets\/js\/latest\.js"[^>]*><\/script>/, "")
+  .replace(/<script>\s*window\.pixelId\s*=\s*"[^"]+";[\s\S]*?<\/script>/, "")
+  .replace(/<script[^>]+src="\/clone-assets\/js\/pixel\.js"[^>]*><\/script>/, "");
 const pageHtmlWithoutOldRelated = optimizedHtml.replace(relatedSectionPattern, "");
 const footerOpenIndex = pageHtmlWithoutOldRelated.search(/<footer[\s>]/);
 const pageHtmlWithRelated =
