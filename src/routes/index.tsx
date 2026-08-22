@@ -5,6 +5,11 @@ import { SELLER_MODAL_HTML, SELLER_MODAL_SCRIPT } from "../lib/seller-modal";
 
 const PLACEHOLDER = "/clone-assets/images/placeholder.svg";
 const MAIN_PRODUCT_ID = "6549324";
+const UTMIFY_PIXEL_ID = "6a5adf30a9b7f7643b523796";
+
+function buildHomepageTrackingScript() {
+  return "<script>(function(){var PIXEL=\"6a5adf30a9b7f7643b523796\";window.pixelId=window.pixelId||PIXEL;var loaded=false;function loadPixel(){if(loaded)return;loaded=true;[\"https://cdn.utmify.com.br/scripts/pixel/pixel.js\",\"https://cdn.utmify.com.br/scripts/utms/latest.js\"].forEach(function(src,i){var s=document.createElement(\"script\");s.async=true;s.defer=true;s.src=src;if(i===1){s.setAttribute(\"data-utmify-prevent-xcod-sck\",\"\");s.setAttribute(\"data-utmify-prevent-subids\",\"\");}document.head.appendChild(s);});}[\"pointerdown\",\"keydown\",\"touchstart\"].forEach(function(name){window.addEventListener(name,loadPixel,{once:true,passive:true});});if(\"requestIdleCallback\"in window){requestIdleCallback(loadPixel,{timeout:2500});}else{setTimeout(loadPixel,1200);}function sendOfficialIC(meta,done){var payload=Object.assign({event_name:\"InitiateCheckout\",status:\"IC\"},meta||{});var tries=0;function attempt(){try{if(window.utmify&&typeof window.utmify.track===\"function\"){window.utmify.track(\"InitiateCheckout\",payload);done();return;}if(window.utmify&&typeof window.utmify.trackEvent===\"function\"){window.utmify.trackEvent(\"InitiateCheckout\",payload);done();return;}if(typeof window.utmifyTrack===\"function\"){window.utmifyTrack(\"InitiateCheckout\",payload);done();return;}}catch(e){}tries+=1;if(tries<6){setTimeout(attempt,50);return;}window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:\"InitiateCheckout\"},payload));done();}loadPixel();attempt();}document.addEventListener(\"click\",function(e){var target=e.target;var btn=target&&target.closest?target.closest(\"button\"):null;if(!btn)return;var label=(btn.textContent||\"\").replace(/\\s+/g,\" \").trim();if(label!==\"Comprar agora\"&&label!==\"Adicionar ao carrinho\")return;e.preventDefault();e.stopImmediatePropagation();var item={id:\"6549324\",title:\"Jogo De Panelas Indução Antiaderente Cerâmica 10 Peças PPG PFOA Free Baunilha\",price:\"61,93\",image:\"https://i.postimg.cc/Gtj1SkJR/D-NQ-NP-2X-754218-MLA98733384331-112025-F.webp\"};try{localStorage.setItem(\"checkout_product\",JSON.stringify(item));}catch(err){}var moved=false;function next(){if(moved)return;moved=true;window.location.href=\"/endereco\"+(window.location.search||\"\");}sendOfficialIC({content_ids:[item.id],content_name:item.title,value:item.price,currency:\"BRL\"},next);setTimeout(next,400);},true);})();<\\/script>";
+}
 
 function escapeHtml(value: string) {
   return value
@@ -33,7 +38,7 @@ function productCard(product: (typeof ALL_PRODUCTS)[number], index = 0) {
 
   const eager = index < 2;
 
-  return `<a href="${href}" onclick="event.preventDefault();window.location.href='${href}';" data-product-card="${escapeHtml(product.id)}" style="display:block !important;flex:0 0 46% !important;width:46% !important;min-width:46% !important;max-width:46% !important;scroll-snap-align:start;border:1px solid #eeeeee;border-radius:6px;padding:8px;background:#fff;color:#333;text-decoration:none;box-sizing:border-box;position:relative;z-index:999;pointer-events:auto;visibility:visible !important;opacity:1 !important;min-height:340px;">
+  return `<a href="${href}" onclick="event.preventDefault();window.location.href='${href}'+(window.location.search||'');" data-product-card="${escapeHtml(product.id)}" style="display:block !important;flex:0 0 46% !important;width:46% !important;min-width:46% !important;max-width:46% !important;scroll-snap-align:start;border:1px solid #eeeeee;border-radius:6px;padding:8px;background:#fff;color:#333;text-decoration:none;box-sizing:border-box;position:relative;z-index:999;pointer-events:auto;visibility:visible !important;opacity:1 !important;min-height:340px;">
     <div style="width:100%;aspect-ratio:1/1;min-height:150px;background:#fff;overflow:hidden;border-radius:4px;display:flex;align-items:center;justify-content:center;"><img src="${escapeHtml(image)}" alt="${escapeHtml(product.title)}" width="300" height="300" style="display:block !important;width:100% !important;height:100% !important;aspect-ratio:1/1;object-fit:contain;visibility:visible !important;opacity:1 !important;" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ""} onerror="this.onerror=null;this.src='${PLACEHOLDER}';" /></div>
     <div style="margin-top:8px;font-size:12px;color:#777;text-decoration:line-through;">R$ ${escapeHtml(product.oldPrice)}</div>
     <div style="font-size:16px;color:#222;line-height:1.15;">R$ ${escapeHtml(reais)}<sup style="font-size:10px;">,${escapeHtml(centavos)}</sup></div>
@@ -52,17 +57,13 @@ function buildRelatedSection() {
   return `<section id="related-products-fixed" data-related-products="true" style="display:block !important;padding:24px 16px;border-top:1px solid #e5e7eb;max-width:1200px;margin:0 auto;background:#fff;clear:both;overflow:visible;visibility:visible !important;opacity:1 !important;min-height:390px;"><h2 style="font-size:18px;line-height:1.25;font-weight:600;margin:0 0 16px;color:#333;">Quem viu este produto também comprou</h2><div data-related-scroller="true" style="display:flex !important;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding-bottom:14px;-webkit-overflow-scrolling:touch;min-height:350px;visibility:visible !important;opacity:1 !important;">${cards}</div></section>`;
 }
 
-function buildRelatedFallbackScript() {
-  const cards = ALL_PRODUCTS.filter((product) => product.id !== MAIN_PRODUCT_ID)
-    .map(productCard)
-    .join("");
-
-  return `<script>(function(){var cards=${JSON.stringify(cards)};function forceStyles(section,scroller){section.id='related-products-fixed';section.setAttribute('data-related-products','true');section.style.cssText='display:block !important;padding:24px 16px;border-top:1px solid #e5e7eb;max-width:1200px;margin:0 auto;background:#fff;clear:both;overflow:visible;visibility:visible !important;opacity:1 !important;min-height:390px;';scroller.setAttribute('data-related-scroller','true');scroller.style.cssText='display:flex !important;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding-bottom:14px;-webkit-overflow-scrolling:touch;min-height:350px;visibility:visible !important;opacity:1 !important;';}function mount(){var section=document.getElementById('related-products-fixed')||document.querySelector('[data-related-products="true"]');if(!section){section=document.createElement('section');section.innerHTML='<h2 style="font-size:18px;line-height:1.25;font-weight:600;margin:0 0 16px;color:#333;">Quem viu este produto também comprou</h2><div data-related-scroller="true"></div>';var footer=document.querySelector('footer');if(footer&&footer.parentNode){footer.parentNode.insertBefore(section,footer)}else{document.body.appendChild(section)}}var scroller=section.querySelector('[data-related-scroller="true"]');if(!scroller){scroller=document.createElement('div');section.appendChild(scroller)}forceStyles(section,scroller);if(scroller.querySelectorAll('[data-product-card]').length<5){scroller.innerHTML=cards}Array.prototype.forEach.call(scroller.querySelectorAll('[data-product-card]'),function(card){card.style.setProperty('display','block','important');card.style.setProperty('visibility','visible','important');card.style.setProperty('opacity','1','important');card.style.pointerEvents='auto';var img=card.querySelector('img');if(img){img.style.setProperty('display','block','important');img.style.setProperty('visibility','visible','important');img.style.setProperty('opacity','1','important')}card.onclick=function(e){e.preventDefault();var href=card.getAttribute('href');if(href) window.location.href=href.split('?')[0]+(window.location.search||'');};});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',mount)}else{mount()}setTimeout(mount,100);setTimeout(mount,500);setTimeout(mount,1500);window.addEventListener('pageshow',mount);})();</script>`;
-}
-
 const relatedSectionPattern = /<section class="px-4 md:px-8 py-6 border-t border-gray-200 max-w-\[1200px\] mx-auto"><h2 class="text-lg font-semibold mb-4">Quem viu este produto também comprou<\/h2>[\s\S]*?<\/section>/;
 const relatedSection = buildRelatedSection();
-const pageHtmlWithoutOldRelated = html.replace(relatedSectionPattern, "");
+const optimizedHtml = html.replace(
+  /<script[^>]+src="\/clone-assets\/js\/~flock\.js"[^>]*><\/script>/,
+  "",
+);
+const pageHtmlWithoutOldRelated = optimizedHtml.replace(relatedSectionPattern, "");
 const footerOpenIndex = pageHtmlWithoutOldRelated.search(/<footer[\s>]/);
 const pageHtmlWithRelated =
   footerOpenIndex >= 0
@@ -73,8 +74,8 @@ const pageHtmlWithRelated =
       ? pageHtmlWithoutOldRelated.replace("</body>", `${relatedSection}</body>`)
       : `${pageHtmlWithoutOldRelated}${relatedSection}`;
 
-const relatedFallbackScript = buildRelatedFallbackScript();
-const injectedTail = `${relatedFallbackScript}${SELLER_MODAL_HTML}${SELLER_MODAL_SCRIPT}`;
+const homepageTrackingScript = buildHomepageTrackingScript();
+const injectedTail = `${homepageTrackingScript}${SELLER_MODAL_HTML}${SELLER_MODAL_SCRIPT}`;
 const pageHtml = pageHtmlWithRelated.includes("</body>")
   ? pageHtmlWithRelated.replace("</body>", `${injectedTail}</body>`)
   : `${pageHtmlWithRelated}${injectedTail}`;
@@ -104,8 +105,7 @@ export const Route = createFileRoute("/")({
         new Response(pageHtml, {
           headers: {
             "content-type": "text/html; charset=utf-8",
-            "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
-            pragma: "no-cache",
+            "cache-control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400",
           },
         }),
     },
