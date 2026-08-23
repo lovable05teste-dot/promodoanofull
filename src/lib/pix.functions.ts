@@ -1,30 +1,37 @@
 import { createServerFn } from "@tanstack/react-start";
 import {
-  createFortpayPixCharge,
-  readFortpayPixStatus,
-  type FortpayChargeInput,
-  type FortpayChargeResult,
+  createFlevopayPixCharge,
+  readFlevopayPixStatus,
+  type PixChargeInput,
+  type PixChargeResult,
 } from "./pix.server";
 
 export const createPixCharge = createServerFn({ method: "POST" })
-  .inputValidator((data: FortpayChargeInput) => data)
-  .handler(async ({ data }): Promise<FortpayChargeResult> => {
-    const token = process.env.FORTPAY_API_TOKEN;
-    const offerHash = process.env.FORTPAY_OFFER_HASH || "o9ybnwoyun";
-    const productHash = process.env.FORTPAY_PRODUCT_HASH || "txi2kwhf0r";
-    const baseUrl = process.env.FORTPAY_BASE_URL;
-    if (!token) {
-      throw new Error("FortPay não está configurado. Salve o segredo FORTPAY_API_TOKEN.");
+  .inputValidator((data: PixChargeInput) => data)
+  .handler(async ({ data }): Promise<PixChargeResult> => {
+    const apiKey = process.env.FLEVOPAY_API_KEY;
+    if (!apiKey) {
+      throw new Error(
+        "FlevoPay não está configurada. Adicione FLEVOPAY_API_KEY nas variáveis do servidor.",
+      );
     }
 
-    return createFortpayPixCharge(data, { token, offerHash, productHash, baseUrl });
+    return createFlevopayPixCharge(data, {
+      apiKey,
+      baseUrl: process.env.FLEVOPAY_BASE_URL,
+      postbackUrl: process.env.FLEVOPAY_POSTBACK_URL,
+    });
   });
 
 export const getPixStatus = createServerFn({ method: "GET" })
   .inputValidator((data: { transactionId: string }) => data)
   .handler(async ({ data }): Promise<{ status: string; paidAt?: string }> => {
-    const token = process.env.FORTPAY_API_TOKEN;
-    const baseUrl = process.env.FORTPAY_BASE_URL;
-    if (!token) return { status: "PENDING" };
-    return readFortpayPixStatus(data.transactionId, token, baseUrl);
+    const apiKey = process.env.FLEVOPAY_API_KEY;
+    if (!apiKey) return { status: "PENDING" };
+
+    return readFlevopayPixStatus(
+      data.transactionId,
+      apiKey,
+      process.env.FLEVOPAY_BASE_URL,
+    );
   });
