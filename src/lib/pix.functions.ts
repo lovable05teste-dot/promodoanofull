@@ -1,4 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
+
+// Gateway da cópia isolada: FlevoPay.
 import {
   createFlevopayPixCharge,
   readFlevopayPixStatus,
