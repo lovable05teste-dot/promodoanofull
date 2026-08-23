@@ -14,7 +14,7 @@ export const createPixCharge = createServerFn({ method: "POST" })
     const apiKey = process.env.FLEVOPAY_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "FlevoPay não está configurada. Adicione FLEVOPAY_API_KEY nas variáveis do servidor.",
+        "FlevoPay V2 não está configurada. Adicione FLEVOPAY_API_KEY no ambiente Preview da branch flevopay-v2.",
       );
     }
 
