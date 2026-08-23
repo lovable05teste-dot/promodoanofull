@@ -53,8 +53,6 @@ export function utmifyTrack(
   if (!sendWithOfficialPixel(name, params)) queueForPixel(name, params);
 }
 
-export const CHECKOUT_URL = "https://go.invictuspay.app.br/gpn09mwxri";
-
 let pendingInitiateCheckout: Promise<boolean> | null = null;
 let pendingInitiateCheckoutKey = "";
 let lastConfirmedKey = "";
