@@ -104,7 +104,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://i.ibb.co", crossOrigin: "anonymous" },
       { rel: "preconnect", href: "https://http2.mlstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://connect.facebook.net" },
-      { rel: "dns-prefetch", href: "https://go.fortpayplataforma.com.br" },
     ],
     scripts: [
       {
