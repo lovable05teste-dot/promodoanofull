@@ -24,3 +24,27 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Deploy na Vercel
+
+O build usa Vite com TanStack Start e Nitro no preset `vercel`. O servidor é
+necessário para gerar e consultar o Pix sem expor o token da FortPay no navegador.
+
+1. Importe este repositório na Vercel, usando a raiz do projeto.
+2. Use o framework **TanStack Start**, Node.js **22.x** ou **24.x** e o comando
+   de build `npm run build`. A instalação está definida como `npm ci --include=dev`.
+3. Deixe o diretório de saída no padrão do framework: Nitro gera automaticamente
+   `.vercel/output`. Não configure `dist` como saída de um site estático.
+4. Configure `FORTPAY_API_TOKEN` em Settings > Environment Variables para o Pix.
+   Opcionalmente configure `FORTPAY_BASE_URL` se usar um endpoint diferente.
+   Nunca use o prefixo `VITE_` no token, pois esse prefixo expõe valores ao navegador.
+5. Faça o deploy. As rotas de produto e checkout são atendidas pelo servidor.
+
+Para conferir o mesmo build localmente:
+
+```sh
+npm ci --include=dev
+npm run build
+```
+
+O `package-lock.json` fixa as dependências para a instalação reproduzível na Vercel.
